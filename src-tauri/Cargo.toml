@@ -38,7 +38,7 @@ argon2 = "0.5"
 rand = "0.8"
 sha2 = "0.10"
 md5 = "0.7"
-dirs = "5.0"
+dirs = "6.0"
 reqwest = { version = "0.12", features = ["json", "blocking"] }
 
 
