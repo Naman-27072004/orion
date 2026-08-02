@@ -154,11 +154,7 @@ pub fn get_orion_vpn_status() -> VpnStatus {
         }
 
         // Dynamic traffic throughput update over time
-        let elapsed = if now_secs > state.last_updated_ts {
-            now_secs - state.last_updated_ts
-        } else {
-            0
-        };
+        let elapsed = now_secs.saturating_sub(state.last_updated_ts);
 
         if elapsed > 0 {
             // Simulate traffic accumulation while connected

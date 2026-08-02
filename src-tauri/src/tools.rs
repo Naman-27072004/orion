@@ -82,7 +82,7 @@ pub fn trigger_defender_scan(scan_type: &str) -> Result<String, String> {
     let scan_arg = if scan_type.to_lowercase() == "full" { "FullScan" } else { "QuickScan" };
     let script = format!("Start-MpScan -ScanType {}", scan_arg);
     let output = std::process::Command::new("powershell")
-        .args(&["-NoProfile", "-Command", &script])
+        .args(["-NoProfile", "-Command", &script])
         .spawn();
 
     match output {
@@ -118,7 +118,7 @@ pub fn get_current_power_mode() -> String {
     use std::os::windows::process::CommandExt;
 
     let mut cmd = std::process::Command::new("powercfg");
-    cmd.args(&["/getactivescheme"]);
+    cmd.args(["/getactivescheme"]);
     #[cfg(target_os = "windows")]
     cmd.creation_flags(0x08000000);
 
@@ -144,7 +144,7 @@ pub fn set_power_mode(mode: &str) -> Result<String, String> {
     };
 
     let mut cmd = std::process::Command::new("powercfg");
-    cmd.args(&["/setactive", scheme_guid]);
+    cmd.args(["/setactive", scheme_guid]);
     #[cfg(target_os = "windows")]
     cmd.creation_flags(0x08000000);
 
@@ -386,17 +386,17 @@ pub fn launch_windows_tool(tool_name: &str) -> Result<String, String> {
     match tool_name {
         "mydell" => {
             let _ = open::that("mydell:");
-            let _ = std::process::Command::new("cmd").args(&["/C", "start", "mydell:"]).spawn();
+            let _ = std::process::Command::new("cmd").args(["/C", "start", "mydell:"]).spawn();
             Ok("Launched My Dell App".to_string())
         }
         "supportassist" => {
             let _ = open::that("dellsupportassist:");
-            let _ = std::process::Command::new("cmd").args(&["/C", "start", "dellsupportassist:"]).spawn();
+            let _ = std::process::Command::new("cmd").args(["/C", "start", "dellsupportassist:"]).spawn();
             Ok("Attempted native Dell SupportAssist launch".to_string())
         }
         "supportassist_web" => {
             let url = "https://www.dell.com/support/home";
-            let _ = std::process::Command::new("cmd").args(&["/C", "start", "", url]).spawn();
+            let _ = std::process::Command::new("cmd").args(["/C", "start", "", url]).spawn();
             let _ = open::that(url);
             Ok("Opened Dell Web Support Portal".to_string())
         }
@@ -411,7 +411,7 @@ pub fn launch_windows_tool(tool_name: &str) -> Result<String, String> {
                 _ => "taskmgr",
             };
             std::process::Command::new("cmd")
-                .args(&["/C", "start", command])
+                .args(["/C", "start", command])
                 .spawn()
                 .map_err(|e| e.to_string())?;
             Ok(format!("Launched {}", command))
