@@ -3,6 +3,7 @@ import { invoke } from '@tauri-apps/api/core';
 import { FullSystemTelemetry, InsightItem, PredictionForecast, TimelineEvent } from './types/orion';
 import { Sidebar } from './components/Sidebar';
 import { CommandPaletteModal } from './components/CommandPaletteModal';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 import { DashboardView } from './views/DashboardView';
 import { LiveMonitorView } from './views/LiveMonitorView';
@@ -154,7 +155,9 @@ export function App() {
       {/* Main View Area */}
       <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8">
         <div className="max-w-7xl mx-auto space-y-6">
-          {renderModuleView()}
+          <ErrorBoundary key={currentModule}>
+            {renderModuleView()}
+          </ErrorBoundary>
         </div>
       </main>
 

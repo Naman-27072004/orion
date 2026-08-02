@@ -1,4 +1,4 @@
-# Logs
+# Logs & Diagnostics
 logs
 *.log
 npm-debug.log*
@@ -7,12 +7,29 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Node & Build Artifacts
 node_modules
 dist
 dist-ssr
 *.local
 
-# Editor directories and files
+# Environment & Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Rust & Tauri Build Targets
+/target
+/src-tauri/target
+/src-tauri/gen/schemas
+
+# Application Data & Local Temp Databases
+*.db
+orion_vault.json
+
+# IDE & Editor files
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -22,3 +39,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+Thumbs.db

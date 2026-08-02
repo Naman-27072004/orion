@@ -18,10 +18,21 @@ pub struct DatabaseState {
 
 impl DatabaseState {
     pub fn init() -> Result<Self> {
-        let db_dir = std::env::temp_dir().join("OrionPlatform");
+        let base_dir = dirs::data_dir().unwrap_or_else(std::env::temp_dir);
+        let db_dir = base_dir.join("OrionPlatform");
         let _ = std::fs::create_dir_all(&db_dir);
         let conn = Connection::open(db_dir.join("orion.db"))?;
-        
+
+        Self::init_with_connection(conn)
+    }
+
+    #[allow(dead_code)]
+    pub fn init_in_memory() -> Result<Self> {
+        let conn = Connection::open_in_memory()?;
+        Self::init_with_connection(conn)
+    }
+
+    fn init_with_connection(conn: Connection) -> Result<Self> {
         conn.execute(
             "CREATE TABLE IF NOT EXISTS telemetry_logs (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -107,5 +118,25 @@ impl DatabaseState {
             events.push(event?);
         }
         Ok(events)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_db_init_and_seed() {
+        let db = DatabaseState::init_in_memory().expect("Database init failed");
+        let events = db.get_timeline_events().expect("Failed to query timeline events");
+        assert!(!events.is_empty());
+        assert_eq!(events.len(), 3);
+    }
+
+    #[test]
+    fn test_log_telemetry() {
+        let db = DatabaseState::init_in_memory().expect("Database init failed");
+        let result = db.log_telemetry(25.5, 45.0, 88, true, 60.2, 95);
+        assert!(result.is_ok());
     }
 }
