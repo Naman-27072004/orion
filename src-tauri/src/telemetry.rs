@@ -122,7 +122,7 @@ fn query_dell_service_tag() -> String {
     use std::os::windows::process::CommandExt;
 
     let mut cmd = std::process::Command::new("powershell");
-    cmd.args(&["-NoProfile", "-Command", "(Get-CimInstance -ClassName Win32_BIOS).SerialNumber"]);
+    cmd.args(["-NoProfile", "-Command", "(Get-CimInstance -ClassName Win32_BIOS).SerialNumber"]);
     #[cfg(target_os = "windows")]
     cmd.creation_flags(0x08000000);
 

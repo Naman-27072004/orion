@@ -100,11 +100,9 @@ pub fn purge_user_temp() -> Result<String, String> {
                             deleted_bytes += len;
                             deleted_count += 1;
                         }
-                    } else if p.is_dir() {
-                        if fs::remove_dir_all(&p).is_ok() {
-                            deleted_bytes += len;
-                            deleted_count += 1;
-                        }
+                    } else if p.is_dir() && fs::remove_dir_all(&p).is_ok() {
+                        deleted_bytes += len;
+                        deleted_count += 1;
                     }
                 }
             }

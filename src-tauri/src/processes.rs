@@ -75,7 +75,7 @@ pub fn kill_process_by_pid(pid: u32) -> Result<String, String> {
         } else {
             // Fallback to taskkill on Windows
             let output = std::process::Command::new("taskkill")
-                .args(&["/F", "/PID", &pid.to_string()])
+                .args(["/F", "/PID", &pid.to_string()])
                 .output();
             
             match output {
@@ -90,7 +90,7 @@ pub fn kill_process_by_pid(pid: u32) -> Result<String, String> {
 
 pub fn trim_ram_working_set() -> Result<String, String> {
     let output = std::process::Command::new("powershell")
-        .args(&[
+        .args([
             "-NoProfile",
             "-Command",
             "[System.GC]::Collect(); [System.GC]::WaitForPendingFinalizers(); Get-Process | ForEach-Object { try { $_.EmptyWorkingSet() } catch {} }"
@@ -115,7 +115,7 @@ pub fn set_process_priority(pid: u32, priority: &str) -> Result<String, String> 
 
     let script = format!("(Get-Process -Id {}).PriorityClass = '{}'", pid, win_priority);
     let output = std::process::Command::new("powershell")
-        .args(&["-NoProfile", "-Command", &script])
+        .args(["-NoProfile", "-Command", &script])
         .output();
 
     match output {

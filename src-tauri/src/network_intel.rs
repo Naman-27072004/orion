@@ -81,7 +81,7 @@ pub fn get_network_speeds() -> NetworkSpeed {
 }
 
 pub fn ping_targets() -> Vec<PingResult> {
-    let targets = vec![
+    let targets = [
         ("1.1.1.1:53", "Cloudflare DNS"),
         ("8.8.8.8:53", "Google DNS"),
         ("1.0.0.1:53", "Cloudflare Sec"),
@@ -135,7 +135,7 @@ pub fn scan_local_ports() -> Vec<OpenPortItem> {
     ];
 
     let output = std::process::Command::new("netstat")
-        .args(&["-an"])
+        .args(["-an"])
         .output();
 
     let listening_ports: std::collections::HashSet<u16> = if let Ok(out) = output {
@@ -180,7 +180,7 @@ pub fn scan_local_ports() -> Vec<OpenPortItem> {
 pub fn get_wifi_audit() -> WifiAudit {
     // Attempt netsh query on Windows
     let output = std::process::Command::new("netsh")
-        .args(&["wlan", "show", "interfaces"])
+        .args(["wlan", "show", "interfaces"])
         .output();
 
     if let Ok(out) = output {
